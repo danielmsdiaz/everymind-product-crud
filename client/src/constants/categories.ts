@@ -1,0 +1,26 @@
+export const categories = [
+    'Acessórios',
+    'Vestuário',
+    'Eletrônicos',
+    'Fitness',
+    'Beleza',
+    'Saúde',
+    'Casa e Cozinha',
+    'Esportes',
+    'Livros',
+    'Brinquedos',
+    'Automotivo',
+    'Ferramentas',
+    'Computadores',
+    'Celulares e Tablets',
+    'Calçados',
+    'Joias e Relógios',
+    'Móveis',
+    'Jardinagem',
+    'Alimentos e Bebidas',
+    'Pet Shop',
+    'Papelaria',
+    'Instrumentos Musicais',
+    'Games e Consoles'
+  ];
+  
