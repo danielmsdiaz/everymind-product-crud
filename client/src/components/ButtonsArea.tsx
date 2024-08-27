@@ -1,15 +1,15 @@
 import ButtonCreate from "./ButtonCreate"
+import ButtonDelete from "./ButtonDelete"
 
 type ButtonsAreaProps = {
-    // setProducts: React.Dispatch<React.SetStateAction<string>>;
-    // setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ButtonsArea = ({setOpenModal} : ButtonsAreaProps) => {
     return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-3">
             <ButtonCreate setOpenModal={setOpenModal}/>
+            <ButtonDelete/>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DataTable, DataTableRowEditCompleteEvent } from 'primereact/datatable';
+import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent } from 'primereact/datatable';
 import { Column, ColumnEditorOptions } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
@@ -40,7 +40,8 @@ export default function Tabela() {
   // Status dos produtos
   const [statuses] = useState<string[]>(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK']);
 
-  //
+  // Estado para armazenar a seleção de linhas
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     ProductService.getProductsWithOrders().then((data) => setProducts(data));
@@ -111,14 +112,9 @@ export default function Tabela() {
     return <InputNumber value={options.value} onValueChange={(e: InputNumberValueChangeEvent) => options.editorCallback!(e.value)} mode="currency" currency="USD" locale="en-US" />;
   };
 
-  // const leftToolbarTemplate = () => {
-  //   return (
-  //     <div className="flex flex-wrap gap-2">
-  //       <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
-  //       <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
-  //     </div>
-  //   );
-  // };
+  const onSelectionChange = (e: DataTableSelectionChangeEvent<Product>) => {
+    setSelectedProducts(e.value);
+  };
 
   return (
     <div>
@@ -134,6 +130,9 @@ export default function Tabela() {
           editMode="row"
           dataKey="id"
           onRowEditComplete={onRowEditComplete}
+          selection={selectedProducts}
+          onSelectionChange={onSelectionChange}
+          selectionMode="multiple" // Permite selecionar múltiplas linhas
         >
           <Column selectionMode="multiple" exportable={false}></Column>
           <Column field="code" header="Código" editor={(options) => textEditor(options)}></Column>

@@ -1,12 +1,8 @@
 import { Button } from "primereact/button"
 
-type DeleteProps = {
-    confirmDeleteSelected: () => void
-}
-
-const ButtonDelete = ({confirmDeleteSelected}: DeleteProps) => {
+const ButtonDelete = () => {
   return (
-    <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected}/>
+    <Button label="Delete" icon="pi pi-trash" severity="danger"/>
   )
 }
 
