@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent } from 'primereact/datatable';
+import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent, DataTableExpandedRows } from 'primereact/datatable';
 import { Column, ColumnEditorOptions } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
@@ -23,6 +23,7 @@ export default function Tabela() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [statuses] = useState<string[]>(['EM_ESTOQUE', 'POUCO_ESTOQUE', 'FORA_DE_ESTOQUE']);
   const [selectedProducts, setSelectedProducts] = useState<ProductType[]>([]);
+  const [expandedRows, setExpandedRows] = useState<ProductType[]>([]);
 
   const fetchProducts = async () => {
     try {
@@ -93,10 +94,22 @@ export default function Tabela() {
     setSelectedProducts(e.value);
   };
 
+  const rowExpansionTemplate = (data: ProductType) => {
+    return (
+      <div className="p-3">
+        <DataTable value={[data]} tableStyle={{ minWidth: '20rem' }} showGridlines>
+          <Column field="id" header="ID" />
+          <Column field="descricao" header="Descrição" />
+          <Column field="quantidade" header="Quantidade" />
+        </DataTable>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="card p-fluid">
-        <Toolbar className="mb-4" left={<ButtonsArea setOpenModal={setOpenModal} />}></Toolbar>
+        <Toolbar className="mb-4" left={<ButtonsArea setProducts={setProducts} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} setOpenModal={setOpenModal} />}></Toolbar>
         <DataTable
           value={filterValue ? filteredProducts : products}
           header={<TableHeader onRefresh={() => {alert("asd")}} filterValue={filterValue} filterOnChange={handleFilterChange} />}
@@ -107,11 +120,15 @@ export default function Tabela() {
           editMode="row"
           dataKey="id"
           onRowEditComplete={onRowEditComplete}
-          selection={selectedProducts}
           onSelectionChange={onSelectionChange}
-          selectionMode="multiple"
+          selection={selectedProducts}
+          selectionMode="checkbox"
+          expandedRows={expandedRows}
+          onRowToggle={(e) => setExpandedRows(e.data as ProductType[])} // Cast to ProductType[]
+          rowExpansionTemplate={rowExpansionTemplate}
         >
           <Column selectionMode="multiple" exportable={false}></Column>
+          <Column expander style={{ width: '5rem' }} />
           <Column field="codigo" header="Código" editor={(options) => textEditor(options)}></Column>
           <Column field="nome" header="Nome" editor={(options) => textEditor(options)}></Column>
           <Column field="preco" header="Preço" body={priceBodyTemplate} editor={(options) => priceEditor(options)}></Column>
