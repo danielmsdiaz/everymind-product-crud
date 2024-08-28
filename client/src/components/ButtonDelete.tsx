@@ -1,5 +1,6 @@
 import { Button } from "primereact/button"
 import { ProductType } from "../types/productType";
+import { apiService } from "../service/ProductService";
 
 type DeleteProps = {
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
@@ -7,14 +8,24 @@ type DeleteProps = {
   setSelectedProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
 
-const ButtonDelete = ({setProducts, selectedProducts, setSelectedProducts}: DeleteProps) => {
+const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: DeleteProps) => {
 
-  const handleDeleteProduct = () => {
-    console.log(selectedProducts);
-  }
+  const handleDeleteProduct = async () => {
+    try {
+      const ids = selectedProducts.map(product => product.id);
+      await apiService.deleteProducts(ids as number[]);
+      if (ids) {
+        setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
+        setSelectedProducts([]);
+      }
+    } catch (error) {
+      console.error('Error deleting products:', error);
+    }
+  };
+
 
   return (
-    <Button onClick={handleDeleteProduct} label="Delete" icon="pi pi-trash" severity="danger"/>
+    <Button onClick={handleDeleteProduct} label="Delete" icon="pi pi-trash" severity="danger" />
   )
 }
 

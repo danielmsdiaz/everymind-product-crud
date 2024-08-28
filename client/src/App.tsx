@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent, DataTableExpandedRows } from 'primereact/datatable';
+import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent } from 'primereact/datatable';
 import { Column, ColumnEditorOptions } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
