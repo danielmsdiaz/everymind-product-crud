@@ -11,16 +11,18 @@ import { apiService } from '../service/ProductService';
 import { ProductType, productTypeModel } from '../types/productType';
 
 type ModalProps = {
-    openModal: boolean,
+    openModal: boolean;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
     setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 };
 
-const Modal = ({setProducts, openModal, setOpenModal }: ModalProps) => {
+const Modal = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
     const [product, setProduct] = useState<ProductType>(productTypeModel);
+    const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
     const closeModal = () => {
-        setProduct(productTypeModel)
+        setProduct(productTypeModel);
+        setErrors({});
         setOpenModal(false);
     };
 
@@ -30,6 +32,10 @@ const Modal = ({setProducts, openModal, setOpenModal }: ModalProps) => {
             ...prevState,
             [id]: value,
         }));
+        setErrors((prevState) => ({
+            ...prevState,
+            [id]: !value.trim(),
+        }));
     };
 
     const handleDropdownChange = (e: { value: string | null }) => {
@@ -37,12 +43,20 @@ const Modal = ({setProducts, openModal, setOpenModal }: ModalProps) => {
             ...prevState,
             categoria: e.value,
         }));
+        setErrors((prevState) => ({
+            ...prevState,
+            categoria: !e.value,
+        }));
     };
 
     const handleNumberChange = (id: keyof typeof product, value: number | null | undefined) => {
         setProduct((prevState) => ({
             ...prevState,
-            [id]: value ?? 0,  // Certifique-se de que o valor seja 'number' ou '0' se for 'null' ou 'undefined'
+            [id]: value ?? 0,
+        }));
+        setErrors((prevState) => ({
+            ...prevState,
+            [id]: value == null || value <= 0,
         }));
     };
 
@@ -56,31 +70,43 @@ const Modal = ({setProducts, openModal, setOpenModal }: ModalProps) => {
         }
     };
 
+    const isFormValid = () => {
+        return Object.values(errors).every(error => !error) && 
+               product.nome.trim() !== '' &&
+               product.descricao.trim() !== '' &&
+               product.categoria !== null &&
+               product.preco > 0 &&
+               product.quantidade as number > 0;
+    };
+
     const modalFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" outlined onClick={closeModal} />
-            <Button label="Save" icon="pi pi-check" onClick={() => handleSubmit()} />
+            <Button label="Save" icon="pi pi-check" onClick={() => handleSubmit()} disabled={!isFormValid()} />
         </>
     );
 
     return (
-        <Dialog visible={openModal} onHide={closeModal} footer={modalFooter} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid">
+        <Dialog visible={openModal} onHide={closeModal} footer={modalFooter} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Detalhes do Produto" modal className="p-fluid">
             <div className="field">
                 <label htmlFor="nome" className="font-bold">
                     Nome
                 </label>
-                <InputText id="nome" value={product.nome} onChange={handleInputChange} />
+                <InputText id="nome" value={product.nome} onChange={handleInputChange} className={errors.nome ? 'p-invalid' : ''} />
+                <small id="nome-help">Insira o nome do produto.</small>
             </div>
             <div className="field">
                 <label htmlFor="descricao" className="font-bold">
                     Descrição
                 </label>
-                <InputTextarea id="descricao" value={product.descricao} onChange={handleInputChange} required rows={3} cols={20} />
+                <InputTextarea id="descricao" value={product.descricao} onChange={handleInputChange} required rows={3} cols={20} className={errors.descricao ? 'p-invalid' : ''} />
+                <small id="descricao-help">Insira uma descrição detalhada do produto.</small>
             </div>
 
             <div className="field">
                 <label htmlFor="categoria" className="font-bold">Categoria</label>
-                <Dropdown id="categoria" value={product.categoria} options={categories} onChange={(e) => handleDropdownChange(e)} placeholder="Select a Category" />
+                <Dropdown id="categoria" value={product.categoria} options={categories} onChange={(e) => handleDropdownChange(e)} placeholder="Selecione uma categoria" className={errors.categoria ? 'p-invalid' : ''} />
+                <small id="categoria-help">Selecione uma categoria para o produto.</small>
             </div>
 
             <div className="formgrid grid">
@@ -88,13 +114,15 @@ const Modal = ({setProducts, openModal, setOpenModal }: ModalProps) => {
                     <label htmlFor="preco" className="font-bold">
                         Preço
                     </label>
-                    <InputNumber id="preco" value={product.preco} onValueChange={(e) => handleNumberChange('preco', e.value)} />
+                    <InputNumber id="preco" value={product.preco} onValueChange={(e) => handleNumberChange('preco', e.value)} className={errors.preco ? 'p-invalid' : ''} />
+                    <small id="preco-help">Insira o valor do produto.</small>
                 </div>
                 <div className="field col">
                     <label htmlFor="quantidade" className="font-bold">
                         Quantidade
                     </label>
-                    <InputNumber id="quantidade" value={product.quantidade} onValueChange={(e) => handleNumberChange('quantidade', e.value)} />
+                    <InputNumber id="quantidade" value={product.quantidade} onValueChange={(e) => handleNumberChange('quantidade', e.value)} className={errors.quantidade ? 'p-invalid' : ''} />
+                    <small id="quantidade-help">Insira a quantidade do produto.</small>
                 </div>
             </div>
         </Dialog>
