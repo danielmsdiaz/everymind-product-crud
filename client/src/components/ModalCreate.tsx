@@ -16,7 +16,7 @@ type ModalProps = {
     setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 };
 
-const Modal = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
+const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
     const [product, setProduct] = useState<ProductType>(productTypeModel);
     const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
@@ -129,4 +129,4 @@ const Modal = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
     );
 };
 
-export default Modal;
+export default ModalCreate;
