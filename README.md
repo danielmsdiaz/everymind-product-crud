@@ -83,6 +83,11 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    ```bash
    prisma migrate deploy
 
+9. (OPCIONAL) Popular o banco de dados com registros, para não precisar inseri-los manualmente:
+    
+   ```bash
+   npx prisma db seed
+
 9. Por fim, inicie o servidor de desenvolvimento:
     
    ```bash
@@ -115,3 +120,9 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    ```bash
    npm run dev
 
+## Detalhes ℹ
+
+- **Botão Novo 🟢**: Para criar um produto.
+- **Botão Apagar 🔴**: Para apagar um, ou mais produtos, é necessário selecionar o produto antes de apagar.
+- **Botão de Editar e Info 🔴**: Ambos a direita do produto.
+- **Filtro de texto**: Filtra por código, nome e categoria.
