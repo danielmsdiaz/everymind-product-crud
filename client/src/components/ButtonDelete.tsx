@@ -12,11 +12,13 @@ const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: De
 
   const handleDeleteProduct = async () => {
     try {
-      const ids = selectedProducts.map(product => product.id);
-      await apiService.deleteProducts(ids as number[]);
-      if (ids) {
-        setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
-        setSelectedProducts([]);
+      if(selectedProducts.length){
+        const ids = selectedProducts.map(product => product.id);
+        await apiService.deleteProducts(ids as number[]);
+        if (ids) {
+          setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
+          setSelectedProducts([]);
+        }
       }
     } catch (error) {
       console.error('Error deleting products:', error);
@@ -25,7 +27,7 @@ const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: De
 
 
   return (
-    <Button onClick={handleDeleteProduct} label="Delete" icon="pi pi-trash" severity="danger" />
+    <Button onClick={handleDeleteProduct} label="Apagar" icon="pi pi-trash" severity="danger" />
   )
 }
 

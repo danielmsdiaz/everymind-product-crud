@@ -22,9 +22,9 @@ export default function Tabela() {
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [filterValue, setFilterValue] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false); 
+  const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<ProductType[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null); 
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
 
   const fetchProducts = async () => {
     try {
@@ -43,7 +43,7 @@ export default function Tabela() {
     fetchProducts();
   }, []);
 
-  
+
   const priceBodyTemplate = (product: ProductType) => {
     return `R$ ${product.preco}`
   };
@@ -72,7 +72,26 @@ export default function Tabela() {
   };
 
   const textEditor = (options: ColumnEditorOptions) => {
-    return <InputText type="text" value={options.value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => options.editorCallback!(e.target.value)} />;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const numericValue = Number(value);
+
+      if (options.field === "quantidade") {
+        if (numericValue > 0 || value === '') {
+          options.editorCallback!(value);
+        }
+      } else {
+        options.editorCallback!(value);
+      }
+    };
+
+    return (
+      <InputText
+        type={options.field === "quantidade" ? "number" : "text"}
+        value={options.value}
+        onChange={handleChange}
+      />
+    );
   };
 
   const priceEditor = (options: ColumnEditorOptions) => {
@@ -83,6 +102,8 @@ export default function Tabela() {
             mode="currency"
             currency="BRL"
             locale="pt-BR"
+            min={0}
+            step={1} 
         />
     );
 };
@@ -104,7 +125,7 @@ export default function Tabela() {
 
   const handleDetailsClick = (product: ProductType) => {
     setSelectedProduct(product);
-    setOpenDetailsModal(true); 
+    setOpenDetailsModal(true);
   };
 
   return (

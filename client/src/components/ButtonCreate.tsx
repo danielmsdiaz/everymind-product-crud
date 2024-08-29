@@ -11,7 +11,7 @@ const ButtonCreate = ({setOpenModal}: CreateProps) => {
     };
 
     return (
-        <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
+        <Button label="Novo" icon="pi pi-plus" severity="success" onClick={openNew} />
     )
 }
 
