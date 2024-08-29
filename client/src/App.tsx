@@ -4,7 +4,6 @@ import { Column, ColumnEditorOptions } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { Tag } from 'primereact/tag';
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 
@@ -12,11 +11,10 @@ import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import ButtonsArea from './components/ButtonsArea';
 import ModalCreate from './components/ModalCreate';
-import ModalDetails from './components/ModalDetails'; // Importando o ModalDetails
+import ModalDetails from './components/ModalDetails';
 
 import { apiService } from './service/ProductService';
 import { ProductType } from './types/productType';
-import { getSeverity } from './constants/severities';
 import { categories } from './constants/categories';
 
 export default function Tabela() {
@@ -24,9 +22,9 @@ export default function Tabela() {
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [filterValue, setFilterValue] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false); // Estado para o modal de detalhes
+  const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false); 
   const [selectedProducts, setSelectedProducts] = useState<ProductType[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null); // Estado para o produto selecionado
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null); 
 
   const fetchProducts = async () => {
     try {
@@ -45,16 +43,9 @@ export default function Tabela() {
     fetchProducts();
   }, []);
 
-  const formatCurrency = (value: number) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  };
-
+  
   const priceBodyTemplate = (product: ProductType) => {
-    return formatCurrency(product.preco);
-  };
-
-  const statusBodyTemplate = (product: ProductType) => {
-    return <Tag value={product.status?.replace("_", " ")} severity={getSeverity(product.status as string)}></Tag>;
+    return `R$ ${product.preco}`
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,13 +54,21 @@ export default function Tabela() {
     setFilteredProducts(products.filter((product: ProductType) => product.nome.toLowerCase().includes(value.toLowerCase())));
   };
 
-  const onRowEditComplete = (e: DataTableRowEditCompleteEvent) => {
-    console.log(e.data);
-    // const updatedProducts = [...products];
-    // const { newData, index } = e;
-    // updatedProducts[index] = newData as ProductType;
-    // setProducts(updatedProducts);
-    // setFilteredProducts(updatedProducts);
+  const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
+    try {
+      const res = await apiService.updateProduct(e.newData as ProductType);
+      if (res.product && res.product.id) {
+        setProducts(prevProducts =>
+          prevProducts.map(product =>
+            product.id === res.product.id ? { ...product, ...res.product } : product
+          )
+        );
+      } else {
+        console.error("Resposta inválida da API:", res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const textEditor = (options: ColumnEditorOptions) => {
@@ -77,8 +76,16 @@ export default function Tabela() {
   };
 
   const priceEditor = (options: ColumnEditorOptions) => {
-    return <InputNumber value={options.value} onValueChange={(e: InputNumberValueChangeEvent) => options.editorCallback!(e.value)} mode="currency" currency="USD" locale="en-US" />;
-  };
+    return (
+        <InputNumber
+            value={options.value}
+            onValueChange={(e: InputNumberValueChangeEvent) => options.editorCallback!(e.value)}
+            mode="currency"
+            currency="BRL"
+            locale="pt-BR"
+        />
+    );
+};
 
   const categoryEditor = (options: ColumnEditorOptions) => {
     return (
@@ -96,8 +103,8 @@ export default function Tabela() {
   };
 
   const handleDetailsClick = (product: ProductType) => {
-    setSelectedProduct(product); // Definir o produto selecionado
-    setOpenDetailsModal(true); // Abrir o modal de detalhes
+    setSelectedProduct(product);
+    setOpenDetailsModal(true); 
   };
 
   return (
@@ -106,7 +113,7 @@ export default function Tabela() {
         <Toolbar className="mb-4" left={<ButtonsArea setProducts={setProducts} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} setOpenModal={setOpenModal} />}></Toolbar>
         <DataTable
           value={filterValue ? filteredProducts : products}
-          header={<TableHeader onRefresh={() => { alert("asd") }} filterValue={filterValue} filterOnChange={handleFilterChange} />}
+          header={<TableHeader filterValue={filterValue} filterOnChange={handleFilterChange} />}
           footer={<TableFooter totalProducts={filterValue ? filteredProducts.length : products.length} />}
           tableStyle={{ minWidth: '60rem' }}
           paginator
@@ -121,10 +128,10 @@ export default function Tabela() {
           <Column selectionMode="multiple" exportable={false}></Column>
           <Column field="codigo" header="Código"></Column>
           <Column field="nome" header="Nome" editor={(options) => textEditor(options)}></Column>
+          <Column field="descricao" header="Descrição" editor={(options) => textEditor(options)}></Column>
+          <Column field="quantidade" header="Quantidade" editor={(options) => textEditor(options)}></Column>
           <Column field="preco" header="Preço" body={priceBodyTemplate} editor={(options) => priceEditor(options)}></Column>
           <Column field="categoria" header="Categoria" editor={(options) => categoryEditor(options)}></Column>
-          <Column field="status" header="Status" body={statusBodyTemplate}></Column>
-
           <Column rowEditor headerStyle={{ width: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
 
           <Column

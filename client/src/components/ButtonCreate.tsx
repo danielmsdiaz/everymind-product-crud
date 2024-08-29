@@ -1,16 +1,12 @@
 import { Button } from "primereact/button"
 
 type CreateProps = {
-    // setProducts: React.Dispatch<React.SetStateAction<string>>;
-    // setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ButtonCreate = ({setOpenModal}: CreateProps) => {
 
     const openNew = () => {
-        // setProduct();
-        // setSubmitted(false);
         setOpenModal(true);
     };
 

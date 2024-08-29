@@ -71,7 +71,7 @@ const ModalDetails = ({ openModal, setOpenModal, product }: ModalDetailsProps) =
                     <div className="field">
                         <label htmlFor="status" className="font-bold">Status:</label>
                         <div id="status" className="mt-2">
-                            <Tag value={product.status?.replace("_", " ")} severity={getSeverity(product.status as string)}></Tag>
+                            <Tag value={product.status?.replace(/_/g, " ")} severity={getSeverity(product.status as string)}></Tag>
                         </div>
                     </div>
                 </div>

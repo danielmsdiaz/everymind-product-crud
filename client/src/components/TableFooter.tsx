@@ -1,4 +1,3 @@
-// src/components/TableFooter.tsx
 import React from 'react';
 
 interface TableFooterProps {
@@ -6,7 +5,13 @@ interface TableFooterProps {
 }
 
 const TableFooter: React.FC<TableFooterProps> = ({ totalProducts }) => {
-    return <div>No total há {totalProducts} produtos.</div>;
+    return (
+        <div>
+            {totalProducts === 0 
+                ? "Não há produtos disponíveis." 
+                : `No total há ${totalProducts} ${totalProducts > 1 ? "produtos." : "produto."}`}
+        </div>
+    );
 };
 
 export default TableFooter;

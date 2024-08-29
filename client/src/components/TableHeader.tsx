@@ -1,17 +1,14 @@
-// src/components/TableHeader.tsx
 import React from 'react';
-import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 
 interface TableHeaderProps {
-    onRefresh: () => void;
     filterValue: string;
     filterOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TableHeader: React.FC<TableHeaderProps> = ({ onRefresh, filterValue, filterOnChange }) => {
+const TableHeader: React.FC<TableHeaderProps> = ({ filterValue, filterOnChange }) => {
     return (
         <div className="flex flex-wrap align-items-center justify-content-between gap-2">
             <span className="text-xl text-900 font-bold">Produtos</span>
@@ -24,7 +21,6 @@ const TableHeader: React.FC<TableHeaderProps> = ({ onRefresh, filterValue, filte
                         placeholder="Filtro de Busca"
                     />
                 </IconField>
-                <Button icon="pi pi-refresh" rounded raised onClick={onRefresh} />
             </div>
         </div>
     );
