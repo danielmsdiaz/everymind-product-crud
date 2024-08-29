@@ -117,7 +117,7 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
                     <InputNumber 
                         id="preco" 
                         value={product.preco} 
-                        onValueChange={(e) => handleNumberChange('preco', e.value)} 
+                        onChange={(e) => handleNumberChange('preco', e.value)} 
                         className={errors.preco ? 'p-invalid' : ''} 
                         mode="currency" 
                         currency="BRL" 
@@ -129,7 +129,7 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
                     <label htmlFor="quantidade" className="font-bold">
                         Quantidade
                     </label>
-                    <InputNumber id="quantidade" value={product.quantidade} onValueChange={(e) => handleNumberChange('quantidade', e.value)} className={errors.quantidade ? 'p-invalid' : ''} />
+                    <InputNumber id="quantidade" value={product.quantidade} onChange={(e) => handleNumberChange('quantidade', e.value)} className={errors.quantidade ? 'p-invalid' : ''} />
                     <small id="quantidade-help">Insira a quantidade do produto.</small>
                 </div>
             </div>
