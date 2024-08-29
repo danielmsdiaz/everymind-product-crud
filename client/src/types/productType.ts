@@ -1,6 +1,6 @@
 export type ProductType = {
     id?: number,
-    codigo?: number,
+    codigo?: string,
     nome: string,
     descricao: string,
     categoria: string | null,

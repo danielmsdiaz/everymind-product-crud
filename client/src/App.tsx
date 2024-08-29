@@ -49,10 +49,21 @@ export default function Tabela() {
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.toLowerCase();
     setFilterValue(value);
-    setFilteredProducts(products.filter((product: ProductType) => product.nome.toLowerCase().includes(value.toLowerCase())));
+
+    setFilteredProducts(products.filter((product: ProductType) => {
+      const codigo = product.codigo as string;
+      const categoria = product.categoria as string;
+
+      const nomeMatch = product.nome.toLowerCase().includes(value);
+      const codigoMatch = codigo.toLowerCase().includes(value);
+      const categoriaMatch = categoria.toLowerCase().includes(value);
+
+      return nomeMatch || codigoMatch || categoriaMatch;
+    }));
   };
+
 
   const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
     try {
@@ -96,17 +107,17 @@ export default function Tabela() {
 
   const priceEditor = (options: ColumnEditorOptions) => {
     return (
-        <InputNumber
-            value={options.value}
-            onValueChange={(e: InputNumberValueChangeEvent) => options.editorCallback!(e.value)}
-            mode="currency"
-            currency="BRL"
-            locale="pt-BR"
-            min={0}
-            step={1} 
-        />
+      <InputNumber
+        value={options.value}
+        onValueChange={(e: InputNumberValueChangeEvent) => options.editorCallback!(e.value)}
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
+        min={0}
+        step={1}
+      />
     );
-};
+  };
 
   const categoryEditor = (options: ColumnEditorOptions) => {
     return (
