@@ -33,6 +33,61 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    ```bash
    git clone https://github.com/danielmsdiaz/everymind-product-crud.git
 
+2. **Entre na pasta do projeto**:
+
+   ```bash
+   cd everymind-product-crud
+
+## Instruções para o Backend (API) 🔧
+
+1. Navegue até a pasta `api`:
+   
+   ```bash
+   cd api
+
+3. Instale as dependencias:
+   
+   ```bash
+   npm install
+
+4. Antes de voltar para o código, crie seu banco, se tiver algum client de visualização como DBeaver, facilitaria:
+   
+5. Voltando ao código. Crie um arquivo .env na pasta api com a configuração da porta e o modelo da URL do banco de dados. Use o arquivo .env.example como referência:
+   
+   ```bash
+   cp .env.example .env
+
+6. No arquivo .env gerado. Selecione uma porta para o seu servidor. Exemplo: PORT=2000
+   
+   ```bash
+   PORT=SUA_PORTA
+
+7. Ainda no arquivo .env gerado. Ajuste a URL de conexão com o banco, substituindo as flags por suas credenciais do PostgreSQL.
+
+   - **usuario:** Substitua pelo seu nome de usuário do PostgreSQL (geralmente, postgres).
+   - **senha:** Substitua pela senha associada a esse usuário (senha criada durante a instalação do postgres).
+   - **sua_porta:** Substitua pela porta que o PostgreSQL está usando (geralmente, 5432).
+   - **nome_do_seu_banco:** Substitua pelo nome do banco de dados que você criou. (no passo 4)
+   
+   ```bash
+   DATABASE_URL="postgresql://usuario:senha@localhost:sua_porta/nome_do_seu_banco?schema=public"
+
+8. Após a inicialização, edite o arquivo .env gerado pelo Prisma para adicionar suas credenciais do PostgreSQL. O conteúdo do arquivo .env deve ficar assim após todas as alterações:
+    
+   ```bash
+   PORT=sua_porta
+   DATABASE_URL="postgresql://usuario:senha@localhost:sua_porta/nome_do_seu_banco?schema=public"
+
+9. Após finalizar o .env, gere a estrutura do seu banco (tabela Produtos) usando o comando:
+    
+   ```bash
+   prisma migrate deploy
+
+9. Por fim, inicie o servidor de desenvolvimento:
+    
+   ```bash
+    npm run start-dev
+
 ## Instruções para o Frontend (Client) 💻
 
 1. Navegue até a pasta `client`:
@@ -44,42 +99,19 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    
    ```bash
    npm install
-   
-5. Inicie o servidor:
-   
-   ```bash
-   npm run dev
 
-## Instruções para o Backend (API) 🔧
-
-1. Navegue até a pasta `api`:
-   
-   ```bash
-   cd ..
-   cd api
-
-3. Instale as dependencias:
-   
-   ```bash
-   npm install
-   
-4. Crie um arquivo .env na pasta api com a configuração da porta e o modelo da URL do banco de dados. Use o arquivo .env.example como referência:
+4. Crie um arquivo .env. Use o arquivo .env.example como referência:
    
    ```bash
    cp .env.example .env
 
-5. Execute o comando para inicializar o Prisma. Isso criará o arquivo .env com uma URL de conexão para o banco de dados PostgreSQL:
+6. No arquivo .env gerado. Insira em (porta_da_api) a porta que você escolheu no passo 6 do Backend
    
    ```bash
-   npx prisma init
-
-6. Após a inicialização, edite o arquivo .env gerado pelo Prisma para adicionar suas credenciais do PostgreSQL. O conteúdo do arquivo deve ser ajustado da seguinte forma:
-    
+   VITE_API_URL=http://localhost:porta_da_api/api/product
+   
+5. Por fim, Inicie o servidor:
+   
    ```bash
-   PORT=sua_porta
-   DATABASE_URL="postgresql://usuario:senha@localhost:sua_porta/nome_do_banco?schema=public"
+   npm run dev
 
-7. Inicie o servidor de desenvolvimento:
-    
-   ```bash
-    npm run start-dev
