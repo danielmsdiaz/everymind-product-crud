@@ -7,6 +7,9 @@
     "start-dev": "nodemon -e json,ts src/server.ts",
     "tsc": "tsc"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
