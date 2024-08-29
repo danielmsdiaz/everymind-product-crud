@@ -50,7 +50,7 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    ```bash
    npm install
 
-4. Antes de voltar para o código, crie seu banco, se tiver algum client de visualização como DBeaver, facilitaria:
+4. Antes de voltar para o código, crie seu banco. Caso tenha algum client de visualização como DBeaver, facilitaria:
    
 5. Voltando ao código. Crie um arquivo .env na pasta api com a configuração da porta e o modelo da URL do banco de dados. Use o arquivo .env.example como referência:
    
@@ -88,7 +88,7 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
    ```bash
    npx prisma db seed
 
-9. Por fim, inicie o servidor de desenvolvimento:
+9. Por fim, inicie o servidor:
     
    ```bash
     npm run start-dev
@@ -123,6 +123,6 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
 ## Detalhes ℹ
 
 - **Botão Novo 🟢**: Para criar um produto.
-- **Botão Apagar 🔴**: Para apagar um, ou mais produtos, é necessário selecionar o produto antes de apagar.
-- **Botão de Editar e Info 🔴**: Ambos a direita do produto.
+- **Botão Apagar 🔴**: Para apagar um, ou mais produtos. É necessário selecionar algum produto antes de apagar.
+- **Botão de Editar e Info 🔴**: Ambos à direita do produto.
 - **Filtro de texto**: Filtra por código, nome e categoria.
