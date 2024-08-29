@@ -26,6 +26,7 @@ model Produto {
   descricao String
   preco     Decimal
   categoria String
+  quantidade Int
   status    Status
 
   @@map("produto")
