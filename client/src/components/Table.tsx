@@ -16,6 +16,7 @@ import ModalDetails from './ModalDetails';
 import { apiService } from '../service/ProductService';
 import { ProductType } from '../types/productType';
 import { categories } from '../constants/categories';
+import { useMessage } from '../context/MessageContext';
 
 const Table = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -25,6 +26,7 @@ const Table = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<ProductType[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
+  const {showSuccess, showError} = useMessage();
 
   const fetchProducts = async () => {
     try {
@@ -74,11 +76,11 @@ const Table = () => {
             product.id === res.product.id ? { ...product, ...res.product } : product
           )
         );
-      } else {
-        console.error("Resposta inválida da API:", res);
+        return showSuccess("Sucesso!", `O produto ${res.product.nome} foi editado com sucesso!`)
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      return showError("Erro!", `O produto não foi editado com sucesso!`)
     }
   };
 

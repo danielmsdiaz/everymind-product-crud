@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { categories } from '../constants/categories';
 import { apiService } from '../service/ProductService';
 import { ProductType, productTypeModel } from '../types/productType';
+import { useMessage } from '../context/MessageContext';
 
 type ModalProps = {
     openModal: boolean;
@@ -19,6 +20,7 @@ type ModalProps = {
 const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
     const [product, setProduct] = useState<ProductType>(productTypeModel);
     const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+    const { showSuccess } = useMessage();
 
     const closeModal = () => {
         setProduct(productTypeModel);
@@ -65,6 +67,7 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
             const res = await apiService.postProduct(product);
             setProducts(prevProducts => [...prevProducts, res]);
             closeModal();
+            showSuccess('Sucesso', 'Produto inserido com sucesso!');
         } catch (error) {
             console.log(error);
         }
@@ -81,8 +84,8 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
 
     const modalFooter = (
         <>
-            <Button label="Cancel" icon="pi pi-times" outlined onClick={closeModal} />
-            <Button label="Save" icon="pi pi-check" onClick={() => handleSubmit()} disabled={!isFormValid()} />
+            <Button label="Cancelar" icon="pi pi-times" outlined onClick={closeModal} />
+            <Button label="Salvar" icon="pi pi-check" onClick={() => handleSubmit()} disabled={!isFormValid()} />
         </>
     );
 

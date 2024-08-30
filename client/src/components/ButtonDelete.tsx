@@ -1,6 +1,8 @@
 import { Button } from "primereact/button"
 import { ProductType } from "../types/productType";
 import { apiService } from "../service/ProductService";
+import { useMessage } from '../context/MessageContext';
+
 
 type DeleteProps = {
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
@@ -9,6 +11,7 @@ type DeleteProps = {
 }
 
 const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: DeleteProps) => {
+  const {showSuccess, showError} = useMessage();
 
   const handleDeleteProduct = async () => {
     try {
@@ -18,8 +21,13 @@ const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: De
         if (ids) {
           setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
           setSelectedProducts([]);
+          if(selectedProducts.length == 1){
+            return showSuccess("Sucesso", `O produto ${selectedProducts[0].nome} foi removido com sucesso`)
+          }
+          return showSuccess("Sucesso", `Os produtos foram removidos com sucesso!`)
         }
       }
+      return showError("Erro", "Selecione ao menos 1 produto para remover!");
     } catch (error) {
       console.error('Error deleting products:', error);
     }

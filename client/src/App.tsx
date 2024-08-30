@@ -1,8 +1,11 @@
 import Table from './components/Table'
+import { MessageProvider } from './context/MessageContext'
 
 const App = () => {
   return (
-    <Table/>
+    <MessageProvider>
+      <Table/>
+    </MessageProvider>
   )
 }
 
