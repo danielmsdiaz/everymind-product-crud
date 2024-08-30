@@ -2,6 +2,10 @@
 
 Este projeto é um CRUD (Create, Read, Update, Delete) de produtos desenvolvido para a Nunes Import. A aplicação utiliza React no frontend e Node.js com Express no backend, e utiliza PostgreSQL como banco de dados.
 
+## Deploy 🛠💻
+
+A aplicação está disponível em: https://nunes-sports.netlify.app/
+
 ## Tecnologias 🛠️
 
 - **Frontend**: React
