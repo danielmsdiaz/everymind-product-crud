@@ -6,14 +6,15 @@ type ButtonsAreaProps = {
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
     setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
     selectedProducts: ProductType[];
+    setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
     setSelectedProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
 
-const ButtonsArea = ({setOpenModal, setProducts, selectedProducts, setSelectedProducts} : ButtonsAreaProps) => {
+const ButtonsArea = ({setFilteredProducts, setOpenModal, setProducts, selectedProducts, setSelectedProducts} : ButtonsAreaProps) => {
     return (
         <div className="flex gap-3">
             <ButtonCreate setOpenModal={setOpenModal}/>
-            <ButtonDelete setProducts={setProducts} selectedProducts={selectedProducts} setSelectedProducts={setSelectedProducts}/>
+            <ButtonDelete setFilteredProducts={setFilteredProducts} setProducts={setProducts} selectedProducts={selectedProducts} setSelectedProducts={setSelectedProducts}/>
         </div>
     )
 }

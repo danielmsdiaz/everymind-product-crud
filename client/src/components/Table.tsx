@@ -153,6 +153,7 @@ const Table = () => {
           className="mb-4"
           left={
             <ButtonsArea
+              setFilteredProducts={setFilteredProducts}
               setProducts={setProducts}
               setSelectedProducts={setSelectedProducts}
               selectedProducts={selectedProducts}

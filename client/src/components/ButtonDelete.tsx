@@ -8,9 +8,10 @@ type DeleteProps = {
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
   selectedProducts: ProductType[];
   setSelectedProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
 
-const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: DeleteProps) => {
+const ButtonDelete = ({setFilteredProducts, setProducts, selectedProducts, setSelectedProducts }: DeleteProps) => {
   const {showSuccess, showError} = useMessage();
 
   const handleDeleteProduct = async () => {
@@ -20,6 +21,7 @@ const ButtonDelete = ({ setProducts, selectedProducts, setSelectedProducts }: De
         await apiService.deleteProducts(ids as number[]);
         if (ids) {
           setProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
+          setFilteredProducts(prevProducts => prevProducts.filter(product => !ids.includes(product.id)));
           setSelectedProducts([]);
           if(selectedProducts.length == 1){
             return showSuccess("Sucesso", `O produto ${selectedProducts[0].nome} foi removido com sucesso`)
