@@ -5,11 +5,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon -e json,ts src/server.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "vercel-build": "npx prisma migrate deploy && npx prisma db seed"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts",
-    "vercel-build": "npx prisma migrate deploy && npx prisma db seed"
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "",
   "license": "ISC",
