@@ -1,6 +1,5 @@
 import { Menubar } from 'primereact/menubar';
-import { Badge } from 'primereact/badge';
-import { MenuItem } from 'primereact/api';
+import { MenuItem } from 'primereact/menuitem';
 import logo from '/nunes-sports-high-resolution-logo-transparent.png';
 
 const Navbar = () => {
@@ -8,8 +7,6 @@ const Navbar = () => {
         <a target="_blank" href={item.url} className="flex align-items-center p-menuitem-link">
             <span className={item.icon} />
             <span className="mx-2">{item.label}</span>
-            {item.badge && <Badge className="ml-auto" value={item.badge} />}
-            {item.shortcut && <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{item.shortcut}</span>}
         </a>
     );
 

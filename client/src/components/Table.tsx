@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+//@ts-expect-error error
 import { DataTable, DataTableRowEditCompleteEvent, DataTableSelectionChangeEvent } from 'primereact/datatable';
 import { Column, ColumnEditorOptions } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
