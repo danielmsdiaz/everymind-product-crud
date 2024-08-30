@@ -71,12 +71,12 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
     };
 
     const isFormValid = () => {
-        return Object.values(errors).every(error => !error) && 
-               product.nome.trim() !== '' &&
-               product.descricao.trim() !== '' &&
-               product.categoria !== null &&
-               product.preco > 0 &&
-               product.quantidade as number > 0;
+        return Object.values(errors).every(error => !error) &&
+            product.nome.trim() !== '' &&
+            product.descricao.trim() !== '' &&
+            product.categoria !== null &&
+            product.preco > 0 &&
+            product.quantidade as number > 0;
     };
 
     const modalFooter = (
@@ -99,7 +99,7 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
                 <label htmlFor="descricao" className="font-bold">
                     Descrição
                 </label>
-                <InputTextarea id="descricao" value={product.descricao} onChange={handleInputChange} required rows={3} cols={20} className={errors.descricao ? 'p-invalid' : ''} />
+                <InputTextarea id="descricao" value={product.descricao} onChange={handleInputChange} required rows={3} cols={20} className={errors.descricao ? 'p-invalid' : ''} style={{ resize: 'none' }} />
                 <small id="descricao-help">Insira uma descrição detalhada do produto.</small>
             </div>
 
@@ -114,14 +114,14 @@ const ModalCreate = ({ setProducts, openModal, setOpenModal }: ModalProps) => {
                     <label htmlFor="preco" className="font-bold">
                         Preço
                     </label>
-                    <InputNumber 
-                        id="preco" 
-                        value={product.preco} 
-                        onChange={(e) => handleNumberChange('preco', e.value)} 
-                        className={errors.preco ? 'p-invalid' : ''} 
-                        mode="currency" 
-                        currency="BRL" 
-                        locale="pt-BR" 
+                    <InputNumber
+                        id="preco"
+                        value={product.preco}
+                        onChange={(e) => handleNumberChange('preco', e.value)}
+                        className={errors.preco ? 'p-invalid' : ''}
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
                     />
                     <small id="preco-help">Insira o valor do produto.</small>
                 </div>

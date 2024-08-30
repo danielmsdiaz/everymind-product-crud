@@ -81,7 +81,7 @@ Para começar a trabalhar com este projeto, siga os passos abaixo:
 9. Após finalizar o .env, gere a estrutura do seu banco (tabela Produtos) usando o comando:
     
    ```bash
-   prisma migrate deploy
+   npx prisma migrate deploy
 
 9. (OPCIONAL) Popular o banco de dados com registros, para não precisar inseri-los manualmente:
     
