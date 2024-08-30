@@ -13,7 +13,7 @@ const Navbar = () => {
         </a>
     );
 
-    const items: MenuItem[] = [
+    const itemsStart: MenuItem[] = [
         {
             label: 'Produtos',
             icon: 'pi pi-shopping-bag',
@@ -22,7 +22,10 @@ const Navbar = () => {
                 boxShadow: '0 4px 2px -2px gray', // Sombra embaixo
                 fontWeight: 'bold',
             }
-        },
+        }
+    ];
+
+    const itemsEnd: MenuItem[] = [
         {
             label: 'Minhas Redes',
             icon: 'pi pi-users',
@@ -51,9 +54,9 @@ const Navbar = () => {
 
     return (
         <div className="card">
-            <Menubar model={items} start={start}/>
+            <Menubar model={itemsStart} start={start} end={<Menubar model={itemsEnd} />} />
         </div>
-    )
+    );
 }
 
 export default Navbar;
