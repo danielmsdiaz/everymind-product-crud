@@ -1,0 +1,41 @@
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+  }
+  
+  .loader-spinner {
+    width: 4rem;
+    height: 4rem;
+    color: #468be5; /* Altere a cor conforme necessário */
+    animation: spin 1s linear infinite;
+  }
+  
+  .loader-spinner path {
+    fill: currentColor;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loader-text {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  }
+  

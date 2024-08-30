@@ -8,6 +8,7 @@ import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 
+import Loader from './Loader';
 import TableHeader from './TableHeader';
 import TableFooter from './TableFooter';
 import ButtonsArea from './ButtonsArea';
@@ -27,9 +28,11 @@ const Table = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<ProductType[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
-  const {showSuccess, showError} = useMessage();
+  const [loading, setLoading] = useState<boolean>(true);
+  const { showSuccess, showError } = useMessage();
 
   const fetchProducts = async () => {
+    setLoading(true); // Começar o carregamento
     try {
       const data = await apiService.getProducts();
       if (Array.isArray(data)) {
@@ -39,6 +42,9 @@ const Table = () => {
       }
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
+      showError("Erro!", "Não foi possível buscar os produtos.");
+    } finally {
+      setLoading(false); // Encerrar o carregamento
     }
   };
 
@@ -46,9 +52,8 @@ const Table = () => {
     fetchProducts();
   }, []);
 
-
   const priceBodyTemplate = (product: ProductType) => {
-    return `R$ ${product.preco}`
+    return `R$ ${product.preco}`;
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +72,6 @@ const Table = () => {
     }));
   };
 
-
   const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
     try {
       const res = await apiService.updateProduct(e.newData as ProductType);
@@ -77,11 +81,11 @@ const Table = () => {
             product.id === res.product.id ? { ...product, ...res.product } : product
           )
         );
-        return showSuccess("Sucesso!", `O produto ${res.product.nome} foi editado com sucesso!`)
+        showSuccess("Sucesso!", `O produto ${res.product.nome} foi editado com sucesso!`);
       }
     } catch (err) {
       console.log(err);
-      return showError("Erro!", `O produto não foi editado com sucesso!`)
+      showError("Erro!", `O produto não foi editado com sucesso!`);
     }
   };
 
@@ -145,40 +149,54 @@ const Table = () => {
   return (
     <div>
       <div className="card p-fluid">
-        <Toolbar className="mb-4" left={<ButtonsArea setProducts={setProducts} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} setOpenModal={setOpenModal} />}></Toolbar>
-        <DataTable
-          value={filterValue ? filteredProducts : products}
-          header={<TableHeader filterValue={filterValue} filterOnChange={handleFilterChange} />}
-          footer={<TableFooter totalProducts={filterValue ? filteredProducts.length : products.length} />}
-          tableStyle={{ minWidth: '60rem' }}
-          paginator
-          rows={5}
-          editMode="row"
-          dataKey="id"
-          onRowEditComplete={onRowEditComplete}
-          onSelectionChange={onSelectionChange}
-          selection={selectedProducts}
-          selectionMode="checkbox"
-          emptyMessage="Não possui registros na tabela"
-        >
-          <Column selectionMode="multiple" exportable={false}></Column>
-          <Column field="codigo" header="Código"></Column>
-          <Column field="nome" header="Nome" editor={(options) => textEditor(options)}></Column>
-          <Column field="descricao" header="Descrição" editor={(options) => textEditor(options)}></Column>
-          <Column field="quantidade" header="Quantidade" editor={(options) => textEditor(options)}></Column>
-          <Column field="preco" header="Preço" body={priceBodyTemplate} editor={(options) => priceEditor(options)}></Column>
-          <Column field="categoria" header="Categoria" editor={(options) => categoryEditor(options)}></Column>
-          <Column rowEditor headerStyle={{ width: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
+        <Toolbar
+          className="mb-4"
+          left={
+            <ButtonsArea
+              setProducts={setProducts}
+              setSelectedProducts={setSelectedProducts}
+              selectedProducts={selectedProducts}
+              setOpenModal={setOpenModal}
+            />
+          }
+        />
+        {loading ? (
+          <Loader /> // Exibir o loader enquanto carrega
+        ) : (
+          <DataTable
+            value={filterValue ? filteredProducts : products}
+            header={<TableHeader filterValue={filterValue} filterOnChange={handleFilterChange} />}
+            footer={<TableFooter totalProducts={filterValue ? filteredProducts.length : products.length} />}
+            tableStyle={{ minWidth: '60rem' }}
+            paginator
+            rows={5}
+            editMode="row"
+            dataKey="id"
+            onRowEditComplete={onRowEditComplete}
+            onSelectionChange={onSelectionChange}
+            selection={selectedProducts}
+            selectionMode="checkbox"
+            emptyMessage="Não possui registros na tabela"
+          >
+            <Column selectionMode="multiple" exportable={false}></Column>
+            <Column field="codigo" header="Código"></Column>
+            <Column field="nome" header="Nome" editor={(options) => textEditor(options)}></Column>
+            <Column field="descricao" header="Descrição" editor={(options) => textEditor(options)}></Column>
+            <Column field="quantidade" header="Quantidade" editor={(options) => textEditor(options)}></Column>
+            <Column field="preco" header="Preço" body={priceBodyTemplate} editor={(options) => priceEditor(options)}></Column>
+            <Column field="categoria" header="Categoria" editor={(options) => categoryEditor(options)}></Column>
+            <Column rowEditor headerStyle={{ width: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
 
-          <Column
-            headerStyle={{ width: '12rem' }}
-            body={(rowData: ProductType) => (
-              <div className="p-d-flex p-ai-center">
-                <Button icon="pi pi-info-circle" className="p-button-text p-ml-2" onClick={() => handleDetailsClick(rowData)} />
-              </div>
-            )}
-          />
-        </DataTable>
+            <Column
+              headerStyle={{ width: '12rem' }}
+              body={(rowData: ProductType) => (
+                <div className="p-d-flex p-ai-center">
+                  <Button icon="pi pi-info-circle" className="p-button-text p-ml-2" onClick={() => handleDetailsClick(rowData)} />
+                </div>
+              )}
+            />
+          </DataTable>
+        )}
       </div>
       <ModalCreate setProducts={setProducts} openModal={openModal} setOpenModal={setOpenModal} />
       {selectedProduct && (
@@ -192,4 +210,4 @@ const Table = () => {
   );
 }
 
-export default Table
+export default Table;
